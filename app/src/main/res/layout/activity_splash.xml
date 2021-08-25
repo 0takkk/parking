@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_linearlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SplashActivity"
+    >
+
+    <TextView
+        android:id="@+id/firstName"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/binggraemelona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Everywhere Parking"
+        android:textAllCaps="false"
+        android:textSize="60dp"
+        android:textColor="@color/colorPink"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:typeface="serif"
+        />
+
+    <ImageView
+        android:id="@+id/image123"
+        android:layout_width="205dp"
+        android:layout_height="231dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="90dp"
+        android:src="@drawable/ic_app_logo"
+        android:visibility="invisible" />
+
+</LinearLayout>
