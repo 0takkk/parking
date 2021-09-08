@@ -71,6 +71,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     private double mSearchLng = -1;
     private double mSearchLat = -1;
     private String mSearchName;
+    boolean isTrackingMode = false;
     Bus bus = BusProvider.getInstance();
 
     ArrayList<Document> parkList = new ArrayList<>();
@@ -85,6 +86,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         setContentView(R.layout.activity_map);
 
         onCheckPermission();
+
         bus.register(this); //정류소 등록
     }
 
@@ -226,21 +228,28 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         int id = v.getId();
         switch (id) {
             case R.id.fab:
-                mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                isTrackingMode = false;
+                //mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
                 if (mSearchLat != -1 && mSearchLng != -1) {
                     mMapView.removeAllPOIItems();
                     mMapView.removeAllCircles();
                     mMapView.addPOIItem(searchMarker);
+                    MapPoint searchMapPoint = MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng);
+                    mMapView.setMapCenterPoint(searchMapPoint, true);
                     requestSearchLocal(mSearchLng, mSearchLat);
                 } else {
                     mMapView.removeAllPOIItems();
                     mMapView.removeAllCircles();
                     requestSearchLocal(mCurrentLng, mCurrentLat);
+                    mMapView.setMapCenterPoint(currentMapPoint, true);
                     mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
                 }
+                mMapView.setZoomLevel(2, true);
                 mLoaderLayout.setVisibility(View.GONE);
+                Log.d("TAK", "fab");
                 break;
             case R.id.fab1:
+                isTrackingMode = false;
                 FancyToast.makeText(this, "현재위치로 이동", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show();
                 mSearchLat = -1;
                 mSearchLng = -1;
@@ -249,9 +258,10 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 mLoaderLayout.setVisibility(View.VISIBLE);
 
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-                mMapView.setZoomLevel(2, false);
+                mMapView.setZoomLevel(2, true);
                 //stopTrackingFab.setVisibility(View.VISIBLE);
                 mLoaderLayout.setVisibility(View.GONE);
+                Log.d("TAK", "fab2");
                 break;
         }
     }
@@ -268,7 +278,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                     if (response.body().getDocuments() != null) {
                         Log.d(TAG, "parkList Success");
                         parkList.addAll(response.body().getDocuments());
-                        //bigMartList.addAll(response.body().getDocuments());
 
                         MapCircle circle1 = new MapCircle(
                                 MapPoint.mapPointWithGeoCoord(y, x), // center
@@ -434,8 +443,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mCurrentLng = mapPointGeo.longitude;
         Log.d(TAG, "현재위치 => " + mCurrentLat + "  " + mCurrentLng);
         mLoaderLayout.setVisibility(View.GONE);
-
-
+        if (!isTrackingMode) {
+            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        }
     }
 
     @Override
@@ -463,6 +473,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mSearchLat = Double.parseDouble(document.getY());
         mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng), true);
         mMapView.removePOIItem(searchMarker);
+        mMapView.setZoomLevel(2, true);
         searchMarker.setItemName(mSearchName);
         searchMarker.setTag(10000);
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng);

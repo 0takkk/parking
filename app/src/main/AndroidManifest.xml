@@ -42,6 +42,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.parking.activities.MainActivity" >
+
         </activity>
 
         <meta-data
