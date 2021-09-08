@@ -7,7 +7,6 @@
         android:id="@+id/ltem_location_tv_placename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/binggraemelona"
         android:text="장소이름"/>
     <TextView
         android:id="@+id/ltem_location_tv_address"
@@ -15,6 +14,5 @@
         android:textColor="@color/colorGray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/binggraemelona"
         android:text="장소주소"/>
 </LinearLayout>

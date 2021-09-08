@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,8 +28,13 @@ public class PlaceDetailActivity extends AppCompatActivity {
     TextView addressText;
     TextView urlText;
     TextView areaText;
+    TextView roadAddressText;
+    TextView distanceText;
     double mCurrentLat, mCurrentLng, lat, lng;
     String placename;
+
+    String roadAddressName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         addressText = findViewById(R.id.placedetail_tv_address);
         urlText = findViewById(R.id.placedetail_tv_url);
         areaText = findViewById(R.id.placedetail_tv_area);
+        roadAddressText = findViewById(R.id.roadAddress);
+        distanceText = findViewById(R.id.distance);
         processIntent();
 
         Button b = (Button)findViewById(R.id.find);
@@ -54,6 +62,10 @@ public class PlaceDetailActivity extends AppCompatActivity {
         Document document = processIntent.getParcelableExtra(IntentKey.PLACE_SEARCH_DETAIL_EXTRA);
         placename = document.getPlaceName();
         placeNameText.setText(placename);
+
+        roadAddressName = document.getRoadAddressName();
+        roadAddressText.setText(roadAddressName);
+
         addressText.setText(document.getAddressName());
         urlText.setText(document.getPlaceUrl());
         mCurrentLat = processIntent.getDoubleExtra("mCurrentLat", 0);
@@ -61,6 +73,29 @@ public class PlaceDetailActivity extends AppCompatActivity {
         lat = processIntent.getDoubleExtra("lat", 0);
         lng = processIntent.getDoubleExtra("lng", 0);
 
+        double theta = mCurrentLng - lng;
+        double distance = Math.sin(deg2rad(mCurrentLat)) * Math.sin(deg2rad(lat)) + Math.cos(deg2rad(mCurrentLat)) * Math.cos(deg2rad(lat)) * Math.cos(deg2rad(theta));
+
+        distance = Math.acos(distance);
+        distance = rad2deg(distance);
+        distance = distance * 60 * 1.1515;
+
+        Log.d("TAK", Double.toString(distance));
+
+        if(distance < 0.6213){
+            distance = distance * 1609.344;
+            Log.d("TAK", Double.toString(distance));
+            int int_distance = (int)Math.ceil(distance);
+            String str_distance = int_distance + "m";
+            distanceText.setText(str_distance);
+        }
+        else{
+            distance = distance * 1.609344;
+            int int_distance = (int) Math.ceil(distance);
+            Log.d("TAK", Double.toString(distance));
+            String str_distance = int_distance + "Km";
+            distanceText.setText(str_distance);
+        }
         DatabaseReference rootDatabaseref = FirebaseDatabase.getInstance().getReference();
         DatabaseReference parkingRef = rootDatabaseref.child("Park");
         DatabaseReference areaRef = parkingRef.child(placename);
@@ -85,7 +120,12 @@ public class PlaceDetailActivity extends AppCompatActivity {
             }
         });
     }
-
+    private static double deg2rad(double deg){
+        return (deg * Math.PI / 180.0);
+    }
+    private static double rad2deg(double rad){
+        return (rad * 180 / Math.PI);
+    }
     // 길찾기 카카오맵 호출( 카카오맵앱이 없을 경우 플레이스토어 링크로 이동)
     public void showMap(Uri geoLocation) {
         Intent intent;

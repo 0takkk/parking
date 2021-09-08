@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.parking">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CAMERA,android.permission.READ_PHONE_STATE"/>
 
@@ -23,7 +24,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.parking.activities.HowToUseActivity"></activity>
         <activity
             android:name="com.example.parking.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -34,9 +34,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.parking.activities.PlaceDetailActivity" />
-        <activity android:name="com.example.parking.activities.SignUpActivity" />
-        <activity android:name="com.example.parking.activities.MapSearchDetailActivity" />
-        <activity android:name="com.example.parking.activities.MapNavigationActivity" />
         <activity android:name="com.example.parking.activities.MapActivity">
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.RESERVE_TAXI_RESERVATION" />
@@ -44,7 +41,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.parking.activities.MainActivity" />
+        <activity android:name="com.example.parking.activities.MainActivity" >
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

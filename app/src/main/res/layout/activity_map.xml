@@ -22,7 +22,6 @@
             >
 
             <EditText
-                android:fontFamily="@font/binggraemelona"
                 android:hint="검색할 장소를 입력 후 선택해주세요"
                 android:id="@+id/map_et_search"
                 android:layout_width="match_parent"
@@ -51,7 +50,6 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="15sp"
         android:src="@drawable/ic_location_searching_black_24dp"
-        app:backgroundTint="@color/colorPink"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -60,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="15sp"
-        android:backgroundTint="@color/colorPink"
         android:src="@drawable/ic_current_location_seach_black_24dp"
         />
 

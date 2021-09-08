@@ -1,12 +1,17 @@
 package com.example.parking.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -49,6 +54,8 @@ import retrofit2.Response;
 public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener, MapView.OpenAPIKeyAuthenticationResultListener, View.OnClickListener, MapView.CurrentLocationEventListener {
     final static String TAG = "MapTAG";
     //xml
+    int nCurrentPermission = 0;
+    static final int PERMISSION_REQUEST = 0x0000001;
     MapView mMapView;
     ViewGroup mMapViewContainer;
     EditText mSearchEdit;
@@ -77,10 +84,46 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_map);
+
+        onCheckPermission();
         bus.register(this); //정류소 등록
-        initView();
     }
 
+    // 위치 권한 요청
+    public void onCheckPermission(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "앱 실행을 위해서 위치권한을 설정해야 합니다.", Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                        PERMISSION_REQUEST);
+            }
+            else{
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                        PERMISSION_REQUEST);
+            }
+        }
+        else{
+            initView();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        switch(requestCode){
+            case PERMISSION_REQUEST :
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "앱 실행을 위한 위치 권한이 설정되었습니다.", Toast.LENGTH_LONG).show();
+                    initView();
+                }
+                else{
+                    Toast.makeText(this, "앱 실행을 위한 위치 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                break;
+        }
+    }
 
     private void initView() {
         //binding
@@ -113,6 +156,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
         mLoaderLayout.setVisibility(View.VISIBLE);
+
+
 
         // editText 검색 텍스처이벤트
         mSearchEdit.addTextChangedListener(new TextWatcher() {

@@ -8,6 +8,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parking.activities.MainActivity
+import com.example.parking.activities.MapActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.lang.Exception
 
@@ -21,12 +22,12 @@ class SplashActivity : AppCompatActivity() {
 
         //서서히보이는 페이드인 애니메이션
         fadeIn = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in);
-        fadeIn(firstName, 0)
-        fadeIn(image123, 1000)
+        fadeIn(image123, 0)
+        fadeIn(firstName, 1000)
         try {
             Handler().postDelayed({
                 //method
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, MapActivity::class.java)
                 //startActivity<LoginActivity>()
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_in_splash, R.anim.fade_out_splash);

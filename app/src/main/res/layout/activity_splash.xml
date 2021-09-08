@@ -9,29 +9,30 @@
     tools:context=".SplashActivity"
     >
 
+    <ImageView
+        android:id="@+id/image123"
+        android:layout_width="205dp"
+        android:layout_height="231dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/ic_app_logo"
+        android:visibility="invisible" />
+
     <TextView
         android:id="@+id/firstName"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/binggraemelona"
+        android:layout_marginTop="80dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Everywhere Parking"
+        android:text="Everywhere\n    Parking"
         android:textAllCaps="false"
-        android:textSize="60dp"
+        android:textSize="50dp"
         android:textColor="@color/colorPink"
         android:textStyle="bold"
         android:visibility="invisible"
         android:typeface="serif"
         />
 
-    <ImageView
-        android:id="@+id/image123"
-        android:layout_width="205dp"
-        android:layout_height="231dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="90dp"
-        android:src="@drawable/ic_app_logo"
-        android:visibility="invisible" />
+
 
 </LinearLayout>
