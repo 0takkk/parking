@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_margin="15sp"
+        android:backgroundTint="@color/colorPink"
         android:src="@drawable/ic_location_searching_black_24dp"
         />
 
@@ -58,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="15sp"
+        android:backgroundTint="@color/colorPink"
         android:src="@drawable/ic_current_location_seach_black_24dp"
         />
 

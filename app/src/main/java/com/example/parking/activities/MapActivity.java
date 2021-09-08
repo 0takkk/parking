@@ -71,7 +71,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     private double mSearchLng = -1;
     private double mSearchLat = -1;
     private String mSearchName;
-    boolean isTrackingMode = false;
     Bus bus = BusProvider.getInstance();
 
     ArrayList<Document> parkList = new ArrayList<>();
@@ -217,7 +216,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mSearchEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FancyToast.makeText(getApplicationContext(), "검색리스트에서 장소를 선택해주세요", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();
+                FancyToast.makeText(getApplicationContext(), "검색리스트에서 장소를 선택해주세요", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show();
             }
         });
     }
@@ -227,7 +226,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         int id = v.getId();
         switch (id) {
             case R.id.fab:
-                isTrackingMode = false;
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
                 if (mSearchLat != -1 && mSearchLng != -1) {
                     mMapView.removeAllPOIItems();
@@ -242,15 +240,16 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 }
                 mLoaderLayout.setVisibility(View.GONE);
                 break;
-            case R.id.fab1: //아래버튼에서부터 1~3임
-                FancyToast.makeText(this, "현재위치로 이동", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
+            case R.id.fab1:
+                FancyToast.makeText(this, "현재위치로 이동", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show();
                 mSearchLat = -1;
                 mSearchLng = -1;
                 mSearchEdit.setText("");
                 //searchDetailFab.setVisibility(View.GONE);
                 mLoaderLayout.setVisibility(View.VISIBLE);
-                isTrackingMode = false;
+
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+                mMapView.setZoomLevel(2, false);
                 //stopTrackingFab.setVisibility(View.VISIBLE);
                 mLoaderLayout.setVisibility(View.GONE);
                 break;
@@ -394,7 +393,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
             @Override
             public void onFailure(Call<CategoryResult> call, Throwable t) {
-                FancyToast.makeText(getApplicationContext(), "해당장소에 대한 상세정보는 없습니다.", FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                FancyToast.makeText(getApplicationContext(), "해당장소에 대한 상세정보는 없습니다.", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show();
                 mLoaderLayout.setVisibility(View.GONE);
                 Intent intent = new Intent(MapActivity.this, PlaceDetailActivity.class);
                 startActivity(intent);
@@ -435,10 +434,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mCurrentLng = mapPointGeo.longitude;
         Log.d(TAG, "현재위치 => " + mCurrentLat + "  " + mCurrentLng);
         mLoaderLayout.setVisibility(View.GONE);
-        //트래킹 모드가 아닌 단순 현재위치 업데이트일 경우, 한번만 위치 업데이트하고 트래킹을 중단시키기 위한 로직
-        if (!isTrackingMode) {
-            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        }
+
+
     }
 
     @Override
@@ -460,7 +457,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Subscribe //검색예시 클릭시 이벤트 오토버스
     public void search(Document document) {//public항상 붙여줘야함
-        FancyToast.makeText(getApplicationContext(), document.getPlaceName() + " 검색", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
+        FancyToast.makeText(getApplicationContext(), document.getPlaceName() + " 검색", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show();
         mSearchName = document.getPlaceName();
         mSearchLng = Double.parseDouble(document.getX());
         mSearchLat = Double.parseDouble(document.getY());
