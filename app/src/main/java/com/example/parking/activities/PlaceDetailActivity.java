@@ -8,7 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,8 @@ import com.example.parking.utils.IntentKey;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class PlaceDetailActivity extends AppCompatActivity {
     TextView placeNameText;
@@ -80,11 +84,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         distance = rad2deg(distance);
         distance = distance * 60 * 1.1515;
 
-        Log.d("TAK", Double.toString(distance));
-
         if(distance < 0.6213){
             distance = distance * 1609.344;
-            Log.d("TAK", Double.toString(distance));
             int int_distance = (int)Math.ceil(distance);
             String str_distance = int_distance + "m";
             distanceText.setText(str_distance);
@@ -92,14 +93,12 @@ public class PlaceDetailActivity extends AppCompatActivity {
         else{
             distance = distance * 1.609344;
             int int_distance = (int) Math.ceil(distance);
-            Log.d("TAK", Double.toString(distance));
             String str_distance = int_distance + "Km";
             distanceText.setText(str_distance);
         }
         DatabaseReference rootDatabaseref = FirebaseDatabase.getInstance().getReference();
         DatabaseReference parkingRef = rootDatabaseref.child("Park");
         DatabaseReference areaRef = parkingRef.child(placename);
-
 
         areaRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,7 +107,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
                 for(DataSnapshot snap : snapshot.getChildren()){
                     String key = snap.getKey();
-                    if(key.equals("MAX")) max = snap.getValue().toString();
+                    if(key.equals("max")) max = snap.getValue().toString();
                     if(key.equals("cur")) cur = snap.getValue().toString();
                 }
                 areaText.setText(cur + " / " + max);
@@ -119,6 +118,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
             }
         });
+
     }
     private static double deg2rad(double deg){
         return (deg * Math.PI / 180.0);

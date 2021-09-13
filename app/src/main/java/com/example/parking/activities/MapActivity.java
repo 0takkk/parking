@@ -246,7 +246,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 }
                 mMapView.setZoomLevel(2, true);
                 mLoaderLayout.setVisibility(View.GONE);
-                Log.d("TAK", "fab");
                 break;
             case R.id.fab1:
                 isTrackingMode = false;
@@ -261,7 +260,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 mMapView.setZoomLevel(2, true);
                 //stopTrackingFab.setVisibility(View.VISIBLE);
                 mLoaderLayout.setVisibility(View.GONE);
-                Log.d("TAK", "fab2");
                 break;
         }
     }
