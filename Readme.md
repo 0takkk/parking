@@ -5,3 +5,4 @@
 이 서비스는 YOLO, ImageZMQ 프로토콜, Android Studio, FireBase 기반으로 구현되었습니다.
 
 
+<img width="644" alt="image" src="https://user-images.githubusercontent.com/89503136/159123913-898c33df-5177-4faa-b3af-55f7be4c8ea0.png">
